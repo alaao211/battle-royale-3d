@@ -728,22 +728,40 @@ function startGame(room) {
     }
 
     // Update dropping entities (falling from sky)
+    const landEntity = (entity) => {
+      entity.y = 1.5;
+      entity.dropping = false;
+      // Push out of buildings if landed inside one
+      for (const b of room.buildings) {
+        const bx1 = b.x - b.w / 2 - 1.5;
+        const bx2 = b.x + b.w / 2 + 1.5;
+        const bz1 = b.z - b.d / 2 - 1.5;
+        const bz2 = b.z + b.d / 2 + 1.5;
+        if (entity.x > bx1 && entity.x < bx2 && entity.z > bz1 && entity.z < bz2) {
+          // Find nearest edge to push out
+          const distLeft = entity.x - bx1;
+          const distRight = bx2 - entity.x;
+          const distTop = entity.z - bz1;
+          const distBottom = bz2 - entity.z;
+          const minDist = Math.min(distLeft, distRight, distTop, distBottom);
+          if (minDist === distLeft) entity.x = bx1 - 0.5;
+          else if (minDist === distRight) entity.x = bx2 + 0.5;
+          else if (minDist === distTop) entity.z = bz1 - 0.5;
+          else entity.z = bz2 + 0.5;
+        }
+      }
+    };
+
     room.players.forEach(p => {
       if (p.dropping && p.y > 1.5) {
-        p.y -= 40 * (deltaTime / 1000); // Fall speed
-        if (p.y <= 1.5) {
-          p.y = 1.5;
-          p.dropping = false;
-        }
+        p.y -= 60 * (deltaTime / 1000); // Faster fall
+        if (p.y <= 1.5) landEntity(p);
       }
     });
     for (const bot of room.bots) {
       if (bot.dropping && bot.y > 1.5) {
-        bot.y -= 40 * (deltaTime / 1000);
-        if (bot.y <= 1.5) {
-          bot.y = 1.5;
-          bot.dropping = false;
-        }
+        bot.y -= 60 * (deltaTime / 1000);
+        if (bot.y <= 1.5) landEntity(bot);
       }
     }
 
@@ -888,7 +906,7 @@ io.on('connection', (socket) => {
     const dx = player.x - item.x;
     const dz = player.z - item.z;
     const dist = Math.sqrt(dx * dx + dz * dz);
-    if (dist > 5) return; // Too far
+    if (dist > 10) return; // Too far (wider range for mobile)
 
     item.picked = true;
 
