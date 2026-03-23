@@ -394,8 +394,8 @@ class PlayerController {
     // Joystick movement (mobile)
     if (this.joystickX !== 0 || this.joystickZ !== 0) {
       // Forward/back relative to camera direction
-      moveX -= Math.sin(this.rotY) * this.joystickZ * speed;
-      moveZ -= Math.cos(this.rotY) * this.joystickZ * speed;
+      moveX += Math.sin(this.rotY) * this.joystickZ * speed;
+      moveZ += Math.cos(this.rotY) * this.joystickZ * speed;
       // Strafe left/right
       moveX -= Math.sin(this.rotY + Math.PI/2) * this.joystickX * speed;
       moveZ -= Math.cos(this.rotY + Math.PI/2) * this.joystickX * speed;

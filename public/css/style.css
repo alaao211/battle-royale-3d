@@ -399,6 +399,46 @@ canvas#gameCanvas {
   animation: pulse 1s infinite;
 }
 
+/* ====== ROTATE SCREEN MESSAGE ====== */
+#rotateScreen {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.rotate-content {
+  text-align: center;
+  color: #fff;
+}
+.rotate-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: rotateAnim 2s infinite;
+}
+@keyframes rotateAnim {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+.rotate-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: #f39c12;
+  margin-bottom: 10px;
+}
+.rotate-subtext {
+  font-size: 14px;
+  color: #888;
+}
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  #rotateScreen { display: flex !important; }
+}
+@media screen and (orientation: landscape), (min-width: 769px) {
+  #rotateScreen { display: none !important; }
+}
+
 /* ====== MOBILE CONTROLS ====== */
 #mobileControls {
   position: fixed;
