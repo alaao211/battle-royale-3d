@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Battle Royale 3D</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Menu Screen -->
+  <div id="menu">
+    <div class="menu-content">
+      <h1>⚔️ BATTLE ROYALE 3D ⚔️</h1>
+      <div class="menu-subtitle">Last One Standing Wins</div>
+      <input type="text" id="playerName" placeholder="اسم اللاعب..." maxlength="15" value="">
+      <button id="playBtn" onclick="joinGame()">🎮 ابدأ اللعب</button>
+      <div class="controls-info">
+        <h3>التحكم</h3>
+        <p><b>WASD</b> - الحركة &nbsp;|&nbsp; <b>Space</b> - قفز</p>
+        <p><b>الماوس</b> - التصويب &nbsp;|&nbsp; <b>كليك يسار</b> - إطلاق النار</p>
+        <p><b>1/2/3</b> - تبديل السلاح &nbsp;|&nbsp; <b>R</b> - إعادة تعبئة</p>
+        <p><b>G</b> - رمي قنبلة &nbsp;|&nbsp; <b>كليك يمين</b> - تقريب</p>
+        <p><b>E</b> - التقاط أسلحة وذخيرة &nbsp;|&nbsp; <b>F/Space</b> - قفز من الطائرة</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game HUD -->
+  <div id="hud" style="display:none;">
+    <!-- Health bar -->
+    <div id="healthBar">
+      <div id="healthFill"></div>
+      <span id="healthText">100</span>
+    </div>
+
+    <!-- Weapon info -->
+    <div id="weaponInfo">
+      <div id="weaponName">AR-15</div>
+      <div id="ammoCount">30 / 30</div>
+      <div id="grenadeCount">💣 2</div>
+    </div>
+
+    <!-- Weapon slots -->
+    <div id="weaponSlots">
+      <div class="weapon-slot" data-weapon="shotgun">S12K | 3</div>
+      <div class="weapon-slot" data-weapon="sniper">AWM | 2</div>
+      <div class="weapon-slot" data-weapon="ar">AR-15 | 1</div>
+    </div>
+
+    <!-- Alive count -->
+    <div id="aliveCount">
+      <span id="aliveNumber">0</span> alive
+    </div>
+
+    <!-- Kill feed -->
+    <div id="killFeed"></div>
+
+    <!-- Minimap -->
+    <canvas id="minimap" width="180" height="180"></canvas>
+
+    <!-- Crosshair -->
+    <div id="crosshair">
+      <div class="cross-h"></div>
+      <div class="cross-v"></div>
+    </div>
+
+    <!-- Damage overlay -->
+    <div id="damageOverlay"></div>
+
+    <!-- Zone warning -->
+    <div id="zoneWarning" style="display:none;">⚠️ خارج المنطقة الآمنة! ⚠️</div>
+
+    <!-- Kill notification -->
+    <div id="killNotification" style="display:none;"></div>
+
+    <!-- Mobile Controls (hidden on desktop) -->
+    <div id="mobileControls" style="display:none;">
+      <!-- Joystick area (left side) -->
+      <div id="joystickArea">
+        <div id="joystickBase">
+          <div id="joystickThumb"></div>
+        </div>
+      </div>
+
+      <!-- Camera touch area (right side) -->
+      <div id="cameraArea"></div>
+
+      <!-- Action buttons (right side) -->
+      <button id="shootBtn" class="mobile-btn">🔫</button>
+      <button id="scopeBtn" class="mobile-btn">🎯</button>
+
+      <!-- Left side buttons -->
+      <button id="jumpBtn" class="mobile-btn">⬆</button>
+      <button id="pickupBtn" class="mobile-btn">E</button>
+
+      <!-- Bottom buttons -->
+      <button id="reloadBtn" class="mobile-btn">R</button>
+      <button id="grenadeBtn" class="mobile-btn">💣</button>
+
+      <!-- Drop from airplane button -->
+      <button id="dropBtn" class="mobile-btn" style="display:none;">🪂</button>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="gameOver" style="display:none;">
+    <div class="gameover-content">
+      <h1 id="gameOverTitle">GAME OVER</h1>
+      <div id="gameOverStats"></div>
+      <button onclick="location.reload()">العب مرة أخرى</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading" style="display:none;">
+    <div class="loading-text">جاري تحميل اللعبة...</div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/weapons.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
