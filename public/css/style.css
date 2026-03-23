@@ -411,50 +411,51 @@ canvas#gameCanvas {
   user-select: none;
 }
 
-/* Joystick Area - left side */
+/* Joystick Area - left side (small area) */
 #joystickArea {
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 45%;
-  height: 50%;
+  bottom: 60px;
+  width: 160px;
+  height: 160px;
   pointer-events: auto;
   touch-action: none;
 }
 
 #joystickBase {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  left: 30px;
-  bottom: 120px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  left: 15px;
+  bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 #joystickThumb {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   position: absolute;
   transition: none;
 }
 
-/* Camera touch area - right side */
+/* Camera touch area - covers most of screen */
 #cameraArea {
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
-  width: 55%;
-  height: 60%;
+  width: 100%;
+  height: 100%;
   pointer-events: auto;
   touch-action: none;
+  z-index: -1;
 }
 
 /* Mobile buttons base style */
@@ -482,88 +483,88 @@ canvas#gameCanvas {
   transform: scale(0.9);
 }
 
-/* Shoot button - big red, right bottom */
+/* Shoot button - right bottom */
 #shootBtn {
-  right: 30px;
-  bottom: 120px;
-  width: 80px;
-  height: 80px;
-  background: rgba(231, 76, 60, 0.5);
-  border: 3px solid rgba(231, 76, 60, 0.8);
-  font-size: 32px;
+  right: 15px;
+  bottom: 80px;
+  width: 65px;
+  height: 65px;
+  background: rgba(231, 76, 60, 0.4);
+  border: 2px solid rgba(231, 76, 60, 0.7);
+  font-size: 26px;
 }
 #shootBtn:active {
-  background: rgba(231, 76, 60, 0.8);
+  background: rgba(231, 76, 60, 0.7);
 }
 
-/* Scope button - blue, above shoot */
+/* Scope button - above shoot */
 #scopeBtn {
-  right: 130px;
-  bottom: 130px;
-  width: 55px;
-  height: 55px;
-  background: rgba(52, 152, 219, 0.4);
-  border: 2px solid rgba(52, 152, 219, 0.7);
-  font-size: 20px;
+  right: 95px;
+  bottom: 90px;
+  width: 45px;
+  height: 45px;
+  background: rgba(52, 152, 219, 0.3);
+  border: 2px solid rgba(52, 152, 219, 0.6);
+  font-size: 16px;
 }
 #scopeBtn.active {
-  background: rgba(52, 152, 219, 0.8);
+  background: rgba(52, 152, 219, 0.7);
 }
 
-/* Jump button - left bottom */
+/* Jump button */
 #jumpBtn {
-  left: 170px;
-  bottom: 120px;
-  width: 60px;
-  height: 60px;
-  background: rgba(46, 204, 113, 0.4);
-  border: 2px solid rgba(46, 204, 113, 0.7);
-  font-size: 22px;
+  right: 95px;
+  bottom: 145px;
+  width: 45px;
+  height: 45px;
+  background: rgba(46, 204, 113, 0.3);
+  border: 2px solid rgba(46, 204, 113, 0.6);
+  font-size: 18px;
 }
 
 /* Pickup button */
 #pickupBtn {
-  left: 170px;
-  bottom: 200px;
-  width: 55px;
-  height: 55px;
-  background: rgba(243, 156, 18, 0.4);
-  border: 2px solid rgba(243, 156, 18, 0.7);
-  font-size: 20px;
+  left: 130px;
+  bottom: 80px;
+  width: 45px;
+  height: 45px;
+  background: rgba(243, 156, 18, 0.3);
+  border: 2px solid rgba(243, 156, 18, 0.6);
+  font-size: 16px;
 }
 
 /* Reload button */
 #reloadBtn {
-  right: 130px;
-  bottom: 60px;
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  font-size: 18px;
+  right: 15px;
+  bottom: 155px;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-size: 14px;
 }
 
 /* Grenade button */
 #grenadeBtn {
-  right: 30px;
-  bottom: 50px;
-  width: 50px;
-  height: 50px;
-  background: rgba(241, 196, 15, 0.4);
-  border: 2px solid rgba(241, 196, 15, 0.7);
-  font-size: 20px;
+  right: 15px;
+  bottom: 30px;
+  width: 42px;
+  height: 42px;
+  background: rgba(241, 196, 15, 0.3);
+  border: 2px solid rgba(241, 196, 15, 0.6);
+  font-size: 16px;
 }
 
 /* Drop from airplane button */
 #dropBtn {
   left: 50%;
-  bottom: 200px;
+  top: 60%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  background: rgba(243, 156, 18, 0.6);
-  border: 3px solid rgba(243, 156, 18, 0.9);
-  font-size: 32px;
+  width: 70px;
+  height: 70px;
+  background: rgba(243, 156, 18, 0.5);
+  border: 3px solid rgba(243, 156, 18, 0.8);
+  font-size: 28px;
 }
 
 /* Mobile-specific HUD adjustments */
@@ -575,20 +576,21 @@ body.is-mobile #minimap {
   height: 120px;
 }
 body.is-mobile #healthBar {
-  width: 200px;
-  bottom: 20px;
+  width: 150px;
+  height: 18px;
+  bottom: 8px;
 }
 body.is-mobile #weaponInfo {
-  bottom: 20px;
-  right: 15px;
-  font-size: 12px;
+  display: none;
 }
 body.is-mobile #weaponSlots {
-  bottom: 55px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 body.is-mobile .weapon-slot {
-  padding: 10px 14px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 11px;
 }
 body.is-mobile #killFeed {
   max-width: 200px;
@@ -597,4 +599,24 @@ body.is-mobile #killFeed {
 body.is-mobile .kill-entry {
   padding: 3px 8px;
   font-size: 10px;
+}
+body.is-mobile #crosshair .cross-h {
+  width: 16px;
+  height: 2px;
+  left: -8px;
+}
+body.is-mobile #crosshair .cross-v {
+  width: 2px;
+  height: 16px;
+  top: -8px;
+}
+body.is-mobile #aliveCount {
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+body.is-mobile #minimap {
+  margin-top: 40px;
+  right: 10px;
 }

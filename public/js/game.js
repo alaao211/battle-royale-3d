@@ -287,8 +287,8 @@ class Game {
         if (touch.identifier === cameraTouchId && this.controller) {
           const dx = touch.clientX - lastCamX;
           const dy = touch.clientY - lastCamY;
-          this.controller.rotY -= dx * cameraSensitivity;
-          this.controller.pitch -= dy * cameraSensitivity;
+          this.controller.rotY += dx * cameraSensitivity;
+          this.controller.pitch += dy * cameraSensitivity;
           this.controller.pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 4, this.controller.pitch));
           lastCamX = touch.clientX;
           lastCamY = touch.clientY;
