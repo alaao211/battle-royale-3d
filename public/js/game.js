@@ -306,24 +306,47 @@ class Game {
     cameraArea.addEventListener('touchend', resetCamera, { passive: false });
     cameraArea.addEventListener('touchcancel', resetCamera, { passive: false });
 
-    // --- SHOOT BUTTON (supports hold for auto-fire) ---
+    // --- SHOOT BUTTON (supports hold for auto-fire + camera movement) ---
     let shootInterval = null;
+    let shootTouchId = null;
+    let lastShootX = 0, lastShootY = 0;
     const shootBtn = document.getElementById('shootBtn');
     shootBtn.addEventListener('touchstart', (e) => {
       e.preventDefault();
+      const touch = e.changedTouches[0];
+      shootTouchId = touch.identifier;
+      lastShootX = touch.clientX;
+      lastShootY = touch.clientY;
       this.mouseDown = true;
+      this.audio.resume();
       this.tryShoot();
       shootInterval = setInterval(() => {
         if (this.weapons.getCurrentWeapon()?.auto) this.tryShoot();
       }, 100);
     }, { passive: false });
+    shootBtn.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      for (const touch of e.changedTouches) {
+        if (touch.identifier === shootTouchId && this.controller) {
+          const dx = touch.clientX - lastShootX;
+          const dy = touch.clientY - lastShootY;
+          this.controller.rotY -= dx * cameraSensitivity;
+          this.controller.pitch -= dy * cameraSensitivity;
+          this.controller.pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 4, this.controller.pitch));
+          lastShootX = touch.clientX;
+          lastShootY = touch.clientY;
+        }
+      }
+    }, { passive: false });
     shootBtn.addEventListener('touchend', (e) => {
       e.preventDefault();
       this.mouseDown = false;
+      shootTouchId = null;
       clearInterval(shootInterval);
     }, { passive: false });
     shootBtn.addEventListener('touchcancel', (e) => {
       this.mouseDown = false;
+      shootTouchId = null;
       clearInterval(shootInterval);
     }, { passive: false });
 
@@ -687,13 +710,7 @@ class Game {
         this.tryShoot();
       }
 
-      // Auto-pickup on mobile
-      if (this.isMobile && !this.inAirplane && !this.dropping) {
-        if (!this._lastAutoPickup || now - this._lastAutoPickup > 300) {
-          this.tryPickup();
-          this._lastAutoPickup = now;
-        }
-      }
+      // Auto-pickup removed - using pickup button instead
     }
 
     // Update effects
@@ -874,8 +891,9 @@ class Game {
         dz: dirZ / dirLen
       });
 
-      // Local muzzle flash
+      // Local muzzle flash + sound
       this.effects.createMuzzleFlash(muzzleX, muzzleY, muzzleZ);
+      this.audio.playShot(this.weapons.currentWeapon);
 
       // Update HUD
       this.hud.updateWeapon(this.weapons.currentWeapon, this.weapons.weapons, this.weapons.ammo, this.weapons.grenades);
