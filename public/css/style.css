@@ -475,8 +475,8 @@ canvas#gameCanvas {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  left: 15px;
-  bottom: 15px;
+  left: 52px;
+  bottom: 57px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -530,10 +530,10 @@ canvas#gameCanvas {
   transform: scale(0.9);
 }
 
-/* Shoot button - right bottom, bigger */
+/* Shoot button */
 #shootBtn {
-  right: 20px;
-  bottom: 60px;
+  right: 13.3%;
+  bottom: 35.2%;
   width: 70px;
   height: 70px;
   background: rgba(231, 76, 60, 0.45);
@@ -544,10 +544,10 @@ canvas#gameCanvas {
   background: rgba(231, 76, 60, 0.8);
 }
 
-/* Scope button - above shoot */
+/* Scope button */
 #scopeBtn {
-  right: 95px;
-  bottom: 90px;
+  right: 9.7%;
+  bottom: 56.8%;
   width: 45px;
   height: 45px;
   background: rgba(52, 152, 219, 0.3);
@@ -560,8 +560,8 @@ canvas#gameCanvas {
 
 /* Jump button */
 #jumpBtn {
-  right: 95px;
-  bottom: 145px;
+  right: 5.3%;
+  bottom: 20%;
   width: 45px;
   height: 45px;
   background: rgba(46, 204, 113, 0.3);
@@ -569,11 +569,10 @@ canvas#gameCanvas {
   font-size: 18px;
 }
 
-/* Pickup button - right side near crosshair */
+/* Pickup button */
 #pickupBtn {
-  right: 50%;
-  top: 55%;
-  transform: translateX(80px);
+  right: 31.2%;
+  bottom: 54.7%;
   width: 50px;
   height: 50px;
   background: rgba(243, 156, 18, 0.15);
@@ -584,8 +583,8 @@ canvas#gameCanvas {
 
 /* Reload button */
 #reloadBtn {
-  right: 15px;
-  bottom: 155px;
+  right: 23.3%;
+  bottom: 5.6%;
   width: 42px;
   height: 42px;
   background: rgba(255, 255, 255, 0.15);
@@ -595,8 +594,8 @@ canvas#gameCanvas {
 
 /* Grenade button */
 #grenadeBtn {
-  right: 15px;
-  bottom: 30px;
+  right: 13.8%;
+  bottom: 7.5%;
   width: 42px;
   height: 42px;
   background: rgba(241, 196, 15, 0.3);
@@ -623,8 +622,8 @@ body.is-mobile {
 body.is-mobile #minimap {
   width: 80px;
   height: 80px;
-  top: 2px;
-  right: 2px;
+  top: 5px;
+  right: 12px;
   margin-top: 0;
   border-width: 1px;
   border-radius: 3px;
@@ -632,13 +631,13 @@ body.is-mobile #minimap {
 body.is-mobile #healthBar {
   width: 150px;
   height: 18px;
-  bottom: 8px;
+  bottom: 12px;
 }
 body.is-mobile #weaponInfo {
   display: none;
 }
 body.is-mobile #weaponSlots {
-  bottom: 30px;
+  bottom: 48px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -665,7 +664,7 @@ body.is-mobile #crosshair .cross-v {
   top: -8px;
 }
 body.is-mobile #aliveCount {
-  top: 5px;
+  top: 10px;
   right: 100px;
   padding: 4px 8px;
   font-size: 12px;

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Layout Editor - رتب الأزرار</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #1a1a2e;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+#editor {
+  position: relative;
+  width: 812px;
+  height: 375px;
+  margin: 20px auto;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="812" height="375"><rect fill="%234a7c4f" width="812" height="375"/><rect fill="%23333" x="300" y="30" width="200" height="150" rx="5" opacity="0.3"/><rect fill="%23333" x="50" y="100" width="100" height="80" rx="5" opacity="0.2"/><rect fill="%23333" x="600" y="80" width="120" height="100" rx="5" opacity="0.2"/><circle cx="406" cy="187" r="15" fill="%23334" opacity="0.5"/></svg>');
+  background-size: cover;
+  border: 3px solid #f39c12;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Crosshair */
+#crosshairMock {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  pointer-events: none;
+  text-shadow: 0 0 5px #000;
+}
+
+/* Player mock */
+#playerMock {
+  position: absolute;
+  top: 55%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 50px;
+  background: #2980b9;
+  border-radius: 5px 5px 3px 3px;
+  pointer-events: none;
+}
+#playerMock::before {
+  content: '';
+  position: absolute;
+  top: -15px; left: 5px;
+  width: 20px; height: 20px;
+  background: #f0c27a;
+  border-radius: 50%;
+}
+
+.draggable {
+  position: absolute;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+  transition: box-shadow 0.2s;
+}
+.draggable:hover, .draggable.dragging {
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+  cursor: grabbing;
+}
+.draggable .label {
+  position: absolute;
+  bottom: -18px;
+  font-size: 10px;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Specific elements */
+#d-shoot {
+  width: 70px; height: 70px;
+  background: rgba(231, 76, 60, 0.6);
+  border: 3px solid rgba(231, 76, 60, 0.9);
+  font-size: 28px;
+}
+#d-scope {
+  width: 45px; height: 45px;
+  background: rgba(52, 152, 219, 0.5);
+  border: 2px solid rgba(52, 152, 219, 0.8);
+  font-size: 18px;
+}
+#d-jump {
+  width: 45px; height: 45px;
+  background: rgba(46, 204, 113, 0.5);
+  border: 2px solid rgba(46, 204, 113, 0.8);
+  font-size: 18px;
+}
+#d-pickup {
+  width: 50px; height: 50px;
+  background: rgba(243, 156, 18, 0.3);
+  border: 2px solid rgba(243, 156, 18, 0.6);
+  font-size: 16px;
+}
+#d-reload {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255, 0.25);
+  border: 2px solid rgba(255,255,255, 0.5);
+  font-size: 14px;
+}
+#d-grenade {
+  width: 42px; height: 42px;
+  background: rgba(241, 196, 15, 0.5);
+  border: 2px solid rgba(241, 196, 15, 0.8);
+  font-size: 18px;
+}
+#d-joystick {
+  width: 100px; height: 100px;
+  background: rgba(255,255,255, 0.1);
+  border: 3px solid rgba(255,255,255, 0.3);
+}
+#d-joystick::after {
+  content: '';
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+#d-minimap {
+  width: 80px; height: 80px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 5px !important;
+  font-size: 10px;
+  color: #888;
+}
+#d-alive {
+  width: auto; height: auto;
+  padding: 4px 10px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #555;
+  border-radius: 5px !important;
+  font-size: 12px;
+  white-space: nowrap;
+}
+#d-health {
+  width: 150px; height: 18px;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid #444;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+#d-health::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 70%; height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  border-radius: 8px;
+}
+#d-weapons {
+  width: auto; height: auto;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #555;
+  border-radius: 5px !important;
+  font-size: 11px;
+  gap: 4px;
+  display: flex;
+  white-space: nowrap;
+}
+
+/* Output panel */
+#output {
+  max-width: 812px;
+  margin: 15px auto;
+  padding: 15px;
+  background: #111;
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+#output h3 {
+  color: #f39c12;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+#positions {
+  color: #2ecc71;
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#copyBtn {
+  margin-top: 10px;
+  padding: 8px 20px;
+  background: #f39c12;
+  border: none;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+#copyBtn:hover { background: #e67e22; }
+.instructions {
+  text-align: center;
+  color: #aaa;
+  margin: 10px auto;
+  font-size: 14px;
+  max-width: 812px;
+}
+.instructions b { color: #f39c12; }
+</style>
+</head>
+<body>
+
+<div class="instructions">
+  <b>اسحب الأزرار</b> وحطها وين ما تبي، بعدين <b>انسخ النتيجة</b> وأرسلها لي 👇
+</div>
+
+<div id="editor">
+  <div id="crosshairMock">+</div>
+  <div id="playerMock"></div>
+
+  <!-- Draggable elements -->
+  <div class="draggable" id="d-shoot" style="left:720px; top:240px;">🔫<span class="label">إطلاق</span></div>
+  <div class="draggable" id="d-scope" style="left:695px; top:170px;">🎯<span class="label">سكوب</span></div>
+  <div class="draggable" id="d-jump" style="left:695px; top:105px;">⬆<span class="label">قفز</span></div>
+  <div class="draggable" id="d-pickup" style="left:460px; top:170px;">E<span class="label">التقاط</span></div>
+  <div class="draggable" id="d-reload" style="left:750px; top:120px;">R<span class="label">تعبئة</span></div>
+  <div class="draggable" id="d-grenade" style="left:750px; top:300px;">💣<span class="label">قنبلة</span></div>
+  <div class="draggable" id="d-joystick" style="left:15px; top:220px;"><span class="label">جويستك</span></div>
+  <div class="draggable" id="d-minimap" style="left:720px; top:5px;">MAP<span class="label">خريطة</span></div>
+  <div class="draggable" id="d-alive" style="left:630px; top:10px;">alive <span style="color:#f39c12;font-size:16px;">9</span></div>
+  <div class="draggable" id="d-health" style="left:330px; top:345px;"><span class="label">الصحة</span></div>
+  <div class="draggable" id="d-weapons" style="left:290px; top:310px;">رشاش|1 مسدس|2 شوتكان|3<span class="label">أسلحة</span></div>
+</div>
+
+<div id="output">
+  <h3>📋 النتيجة - انسخها وأرسلها لي:</h3>
+  <div id="positions"></div>
+  <button id="copyBtn" onclick="copyPositions()">📋 نسخ النتيجة</button>
+</div>
+
+<script>
+const editor = document.getElementById('editor');
+const editorRect = () => editor.getBoundingClientRect();
+let dragEl = null, offsetX = 0, offsetY = 0;
+
+// Mouse drag
+document.addEventListener('mousedown', (e) => {
+  const el = e.target.closest('.draggable');
+  if (!el) return;
+  dragEl = el;
+  dragEl.classList.add('dragging');
+  const rect = el.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+});
+document.addEventListener('mousemove', (e) => {
+  if (!dragEl) return;
+  const er = editorRect();
+  let x = e.clientX - er.left - offsetX;
+  let y = e.clientY - er.top - offsetY;
+  x = Math.max(0, Math.min(er.width - dragEl.offsetWidth, x));
+  y = Math.max(0, Math.min(er.height - dragEl.offsetHeight, y));
+  dragEl.style.left = x + 'px';
+  dragEl.style.top = y + 'px';
+  updatePositions();
+});
+document.addEventListener('mouseup', () => {
+  if (dragEl) dragEl.classList.remove('dragging');
+  dragEl = null;
+});
+
+// Touch drag
+document.addEventListener('touchstart', (e) => {
+  const el = e.target.closest('.draggable');
+  if (!el) return;
+  e.preventDefault();
+  dragEl = el;
+  dragEl.classList.add('dragging');
+  const rect = el.getBoundingClientRect();
+  offsetX = e.touches[0].clientX - rect.left;
+  offsetY = e.touches[0].clientY - rect.top;
+}, { passive: false });
+document.addEventListener('touchmove', (e) => {
+  if (!dragEl) return;
+  e.preventDefault();
+  const er = editorRect();
+  let x = e.touches[0].clientX - er.left - offsetX;
+  let y = e.touches[0].clientY - er.top - offsetY;
+  x = Math.max(0, Math.min(er.width - dragEl.offsetWidth, x));
+  y = Math.max(0, Math.min(er.height - dragEl.offsetHeight, y));
+  dragEl.style.left = x + 'px';
+  dragEl.style.top = y + 'px';
+  updatePositions();
+}, { passive: false });
+document.addEventListener('touchend', () => {
+  if (dragEl) dragEl.classList.remove('dragging');
+  dragEl = null;
+});
+
+function updatePositions() {
+  const W = 812, H = 375;
+  const items = document.querySelectorAll('.draggable');
+  let text = '';
+  items.forEach(el => {
+    const x = parseInt(el.style.left);
+    const y = parseInt(el.style.top);
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+    const name = el.id.replace('d-', '');
+
+    // Convert to right/bottom/left/top percentages or pixels
+    const fromRight = W - x - w;
+    const fromBottom = H - y - h;
+
+    text += `${name}: left=${x} top=${y} right=${fromRight} bottom=${fromBottom}\n`;
+  });
+  document.getElementById('positions').textContent = text;
+}
+
+function copyPositions() {
+  const text = document.getElementById('positions').textContent;
+  // Method 1: clipboard API
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    done();
+    return;
+  }
+  fallbackCopy(text);
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:1;font-size:16px;width:90vw;height:200px;z-index:9999;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); done(); }
+  catch(e) { /* user can manually copy */ }
+  // Don't remove - let user see and copy manually
+  ta.style.background = '#fff';
+  ta.style.color = '#000';
+  setTimeout(() => ta.remove(), 10000);
+}
+function done() {
+  document.getElementById('copyBtn').textContent = '✅ تم النسخ!';
+  setTimeout(() => {
+    document.getElementById('copyBtn').textContent = '📋 نسخ النتيجة';
+  }, 2000);
+}
+
+updatePositions();
+</script>
+</body>
+</html>
