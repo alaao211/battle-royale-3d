@@ -3,7 +3,7 @@ class WeaponsSystem {
   constructor() {
     this.weapons = {
       ar: {
-        name: 'AR-15',
+        name: 'رشاش',
         damage: 25,
         fireRate: 150,
         range: 200,
@@ -13,7 +13,7 @@ class WeaponsSystem {
         auto: true
       },
       sniper: {
-        name: 'AWM Sniper',
+        name: 'مسدس',
         damage: 80,
         fireRate: 1500,
         range: 500,
@@ -23,7 +23,7 @@ class WeaponsSystem {
         auto: false
       },
       shotgun: {
-        name: 'S12K Shotgun',
+        name: 'شوتكان',
         damage: 20,
         fireRate: 800,
         range: 50,

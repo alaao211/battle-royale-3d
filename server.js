@@ -19,9 +19,9 @@ const TOTAL_PLAYERS = 10; // Total players (humans + bots) = 10
 const MAX_PLAYERS = 10;
 
 const WEAPONS = {
-  ar: { name: 'AR-15', damage: 25, fireRate: 150, range: 200, magSize: 30, reloadTime: 2000, spread: 0.03 },
-  sniper: { name: 'AWM Sniper', damage: 80, fireRate: 1500, range: 500, magSize: 5, reloadTime: 3000, spread: 0.005 },
-  shotgun: { name: 'S12K Shotgun', damage: 20, fireRate: 800, range: 50, magSize: 8, reloadTime: 2500, spread: 0.15, pellets: 5 }
+  ar: { name: 'رشاش', damage: 25, fireRate: 150, range: 200, magSize: 30, reloadTime: 2000, spread: 0.03 },
+  sniper: { name: 'مسدس', damage: 80, fireRate: 1500, range: 500, magSize: 5, reloadTime: 3000, spread: 0.005 },
+  shotgun: { name: 'شوتكان', damage: 20, fireRate: 800, range: 50, magSize: 8, reloadTime: 2500, spread: 0.15, pellets: 5 }
 };
 
 const rooms = new Map();
@@ -49,7 +49,7 @@ function createRoom(roomId) {
 
 function generateBuildings() {
   const buildings = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     const w = 10 + Math.random() * 20;
     const h = 8 + Math.random() * 20;
     const d = 10 + Math.random() * 20;
@@ -247,6 +247,12 @@ function updateBotAI(bot, room, deltaTime) {
   botPickupLoot(bot, room);
 
   const now = Date.now();
+
+  // Bots don't attack for first 10 seconds
+  const peaceDuration = 10000;
+  const gameAge = room.startTime ? (now - room.startTime) : 0;
+  const inPeaceTime = gameAge < peaceDuration;
+
   const allEntities = [];
   room.players.forEach(p => {
     if (p.alive && (!p.spawnProtection || now > p.spawnProtection)) allEntities.push(p);
@@ -334,7 +340,7 @@ function updateBotAI(bot, room, deltaTime) {
       }
       bot.patrolTimer -= deltaTime;
 
-      if (nearestEnemy && nearestDist < 60 && hasLineOfSight(bot.x, bot.z, nearestEnemy.x, nearestEnemy.z, room.buildings)) {
+      if (!inPeaceTime && nearestEnemy && nearestDist < 60 && hasLineOfSight(bot.x, bot.z, nearestEnemy.x, nearestEnemy.z, room.buildings)) {
         bot.state = 'chase';
         bot.targetEnemy = nearestEnemy;
         bot.stateTimer = 5000;
@@ -342,6 +348,7 @@ function updateBotAI(bot, room, deltaTime) {
       break;
 
     case 'chase':
+      if (inPeaceTime) { bot.state = 'loot'; break; }
       if (!bot.weapon) {
         bot.state = 'loot'; // Need weapon first
         break;
@@ -367,6 +374,7 @@ function updateBotAI(bot, room, deltaTime) {
       break;
 
     case 'attack':
+      if (inPeaceTime) { bot.state = 'loot'; break; }
       if (!bot.weapon) { bot.state = 'loot'; break; }
       if (!nearestEnemy || !nearestEnemy.alive) {
         bot.state = 'patrol';

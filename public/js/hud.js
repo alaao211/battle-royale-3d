@@ -51,6 +51,10 @@ class HUD {
 
     this.weaponSlots.forEach(slot => {
       slot.classList.toggle('active', slot.dataset.weapon === weaponKey);
+      // Highlight slots that have weapons in inventory
+      if (window.game && window.game.weapons && window.game.weapons.inventory) {
+        slot.classList.toggle('has-weapon', window.game.weapons.inventory.includes(slot.dataset.weapon));
+      }
     });
   }
 

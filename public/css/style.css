@@ -196,6 +196,12 @@ canvas#gameCanvas {
   border-color: #f39c12;
   color: #f39c12;
   background: rgba(243, 156, 18, 0.15);
+  box-shadow: 0 0 10px rgba(243, 156, 18, 0.5), inset 0 0 5px rgba(243, 156, 18, 0.2);
+}
+.weapon-slot.has-weapon {
+  border-color: #2ecc71;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
 }
 
 /* Alive count */
@@ -523,18 +529,18 @@ canvas#gameCanvas {
   transform: scale(0.9);
 }
 
-/* Shoot button - right bottom */
+/* Shoot button - right bottom, bigger */
 #shootBtn {
-  right: 15px;
-  bottom: 80px;
-  width: 65px;
-  height: 65px;
-  background: rgba(231, 76, 60, 0.4);
-  border: 2px solid rgba(231, 76, 60, 0.7);
-  font-size: 26px;
+  right: 20px;
+  bottom: 60px;
+  width: 70px;
+  height: 70px;
+  background: rgba(231, 76, 60, 0.45);
+  border: 3px solid rgba(231, 76, 60, 0.8);
+  font-size: 28px;
 }
 #shootBtn:active {
-  background: rgba(231, 76, 60, 0.7);
+  background: rgba(231, 76, 60, 0.8);
 }
 
 /* Scope button - above shoot */
@@ -562,15 +568,9 @@ canvas#gameCanvas {
   font-size: 18px;
 }
 
-/* Pickup button */
+/* Pickup button - hidden on mobile (auto pickup) */
 #pickupBtn {
-  left: 130px;
-  bottom: 80px;
-  width: 45px;
-  height: 45px;
-  background: rgba(243, 156, 18, 0.3);
-  border: 2px solid rgba(243, 156, 18, 0.6);
-  font-size: 16px;
+  display: none;
 }
 
 /* Reload button */
@@ -612,8 +612,11 @@ body.is-mobile {
   cursor: auto;
 }
 body.is-mobile #minimap {
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
+  top: 5px;
+  right: 5px;
+  margin-top: 0;
 }
 body.is-mobile #healthBar {
   width: 150px;
@@ -651,10 +654,14 @@ body.is-mobile #crosshair .cross-v {
   top: -8px;
 }
 body.is-mobile #aliveCount {
-  top: 10px;
-  right: 10px;
-  padding: 5px 10px;
-  font-size: 14px;
+  top: 5px;
+  right: 100px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+body.is-mobile #aliveNumber {
+  font-size: 16px;
 }
 body.is-mobile #minimap {
   margin-top: 40px;

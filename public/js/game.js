@@ -672,6 +672,14 @@ class Game {
       if (this.mouseDown && !this.inAirplane && !this.dropping && this.weapons.getCurrentWeapon()?.auto) {
         this.tryShoot();
       }
+
+      // Auto-pickup on mobile
+      if (this.isMobile && !this.inAirplane && !this.dropping) {
+        if (!this._lastAutoPickup || now - this._lastAutoPickup > 500) {
+          this.tryPickup();
+          this._lastAutoPickup = now;
+        }
+      }
     }
 
     // Update effects
