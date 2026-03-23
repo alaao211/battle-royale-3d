@@ -503,21 +503,35 @@ class Game {
 
   tryPickup() {
     if (!this.controller || this.inAirplane || this.dropping) return;
-    // Find nearest loot item
     if (!this._currentLoot) return;
-    let nearest = null;
-    let nearestDist = 5;
-    for (const item of this._currentLoot) {
-      const dx = this.controller.x - item.x;
-      const dz = this.controller.z - item.z;
-      const dist = Math.sqrt(dx * dx + dz * dz);
-      if (dist < nearestDist) {
-        nearestDist = dist;
-        nearest = item;
+    const pickupRange = this.isMobile ? 8 : 5;
+
+    if (this.isMobile) {
+      // Auto pickup: grab ALL items in range
+      for (const item of this._currentLoot) {
+        const dx = this.controller.x - item.x;
+        const dz = this.controller.z - item.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        if (dist < pickupRange) {
+          this.network.socket.emit('pickup', { lootId: item.id });
+        }
       }
-    }
-    if (nearest) {
-      this.network.socket.emit('pickup', { lootId: nearest.id });
+    } else {
+      // Desktop: pickup nearest single item
+      let nearest = null;
+      let nearestDist = pickupRange;
+      for (const item of this._currentLoot) {
+        const dx = this.controller.x - item.x;
+        const dz = this.controller.z - item.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearest = item;
+        }
+      }
+      if (nearest) {
+        this.network.socket.emit('pickup', { lootId: nearest.id });
+      }
     }
   }
 
@@ -675,7 +689,7 @@ class Game {
 
       // Auto-pickup on mobile
       if (this.isMobile && !this.inAirplane && !this.dropping) {
-        if (!this._lastAutoPickup || now - this._lastAutoPickup > 500) {
+        if (!this._lastAutoPickup || now - this._lastAutoPickup > 300) {
           this.tryPickup();
           this._lastAutoPickup = now;
         }
