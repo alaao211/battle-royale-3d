@@ -371,10 +371,19 @@ class Game {
       if (this.controller) this.controller.keys['Space'] = false;
     }, { passive: false });
 
-    // --- PICKUP ---
+    // --- PICKUP (repeats while held) ---
+    let pickupInterval = null;
     document.getElementById('pickupBtn').addEventListener('touchstart', (e) => {
       e.preventDefault();
       this.tryPickup();
+      pickupInterval = setInterval(() => this.tryPickup(), 200);
+    }, { passive: false });
+    document.getElementById('pickupBtn').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      clearInterval(pickupInterval);
+    }, { passive: false });
+    document.getElementById('pickupBtn').addEventListener('touchcancel', () => {
+      clearInterval(pickupInterval);
     }, { passive: false });
 
     // --- RELOAD ---
