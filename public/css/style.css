@@ -514,6 +514,7 @@ canvas#gameCanvas {
   font-weight: bold;
   pointer-events: auto;
   touch-action: none;
+  z-index: 5;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
